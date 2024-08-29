@@ -2,7 +2,14 @@
 
 This is the software repo for a system running a non-standard seismograph, welcome!
 
-## 🌍 From the Project System
+**Run**: the setup depends on a virtual env called it-u, so to run, in the base it-u-intertotem directory, simply ...
+
+```
+source it-u/bin/activate
+python main.py
+```
+
+## 🌍 From the [Project Proposal](https://github.com/heseltime/it-u-intertotem/blob/main/project-proposal.pdf)
 
 This project aims to engage how we experience seismic data by creating an experience (artistic) and non-standard seismograph that merges cultural artefact and elements of nature.
 
