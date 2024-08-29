@@ -15,7 +15,8 @@ This project aims to engage how we experience seismic data by creating an experi
 
 In many cultures, totems symbolize a deep connection between the natural world, spiritual beliefs, and community identity. Drawing on this notion, our project seeks to create a bridge between the science of seismology and the cultural and psychological, physiological experiences.
 
-![image](https://github.com/user-attachments/assets/bda3b3d8-47c9-41eb-b8a5-f70a998adc02)
+![image](https://github.com/user-attachments/assets/d5fbde86-16aa-4a73-8cec-b953ca6096df)
+
 
 ## 🛠️ Hardware 
 
