@@ -11,7 +11,7 @@ from tqdm import tqdm  # For progress bar support
 # Import communication module
 from communication.communication import copy_file_to_pi
 
-TARGET_DEVICE_INPUT_DIRECTORY = '/home/pi/input'  # Directory on the destination Pi where files should be copied
+TARGET_DEVICE_INPUT_DIRECTORY = '/home/totem/Desktop/intertotem/it-u-intertotem/input'  # Directory on the destination Pi where files should be copied
 
 # DIRECTORY to store output WAV files
 OUTPUT_DIR = 'output'
