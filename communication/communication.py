@@ -1,3 +1,5 @@
+# communication/communication.py
+
 import os
 import paramiko
 from pythonosc.udp_client import SimpleUDPClient
@@ -19,6 +21,13 @@ password = 'yourpassword'         # SSH password (or set up SSH keys for passwor
 client = SimpleUDPClient(osc_ip, osc_port)
 
 def copy_file_to_pi(local_path, remote_path):
+    """
+    Copies a WAV file from the local directory to the remote Raspberry Pi and sends an OSC message upon completion.
+
+    Parameters:
+        local_path (str): The path to the local file to be copied.
+        remote_path (str): The path on the remote Pi where the file will be copied.
+    """
     try:
         # Set up SSH and SFTP clients
         ssh = paramiko.SSHClient()
@@ -42,6 +51,9 @@ def copy_file_to_pi(local_path, remote_path):
         print(f"Error copying file {local_path}: {e}")
 
 def main():
+    """
+    Monitors the local output directory for new WAV files and copies them to the remote Pi.
+    """
     # Monitor the LOCAL_OUTPUT_DIR for new files
     print("Monitoring output directory for new files...")
     for filename in os.listdir(LOCAL_OUTPUT_DIR):

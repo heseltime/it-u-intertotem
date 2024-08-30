@@ -8,6 +8,11 @@ from scipy.io.wavfile import write as write_wav
 import re
 from tqdm import tqdm  # For progress bar support
 
+# Import communication module
+from communication.communication import copy_file_to_pi
+
+TARGET_DEVICE_INPUT_DIRECTORY = '/home/pi/input'  # Directory on the destination Pi where files should be copied
+
 # DIRECTORY to store output WAV files
 OUTPUT_DIR = 'output'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -125,6 +130,10 @@ def main_loop():
                         # Convert to WAV file
                         seismogram_to_wav(stream, output_path)
                         print(f"WAV file created: {output_path}")
+
+                        # Call the function to copy the file to the remote Pi
+                        copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename))
+                        
                     else:
                         print(f"No seismogram data available for earthquake with magnitude: {magnitude}.")
                 except Exception as e:
