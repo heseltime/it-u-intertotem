@@ -12,8 +12,10 @@ python main.py
 **Project Structure**:
 
 ```
-your_project_directory/
+it-u-intertotem/
 │
+├── code_templates/ # sample scripts
+├── it-u/ # venv scripts
 ├── main.py # main earthquake logic, calls communication script at the end
 ├── communication/
 │   ├── __init__.py  # (empty file to make this directory a package)
