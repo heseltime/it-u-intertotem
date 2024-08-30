@@ -9,13 +9,13 @@ osc_ip = "127.0.0.1"  # IP of the OSC server (running on the destination Pi)
 osc_port = 57120       # Port of the OSC server
 
 # Directories
-LOCAL_OUTPUT_DIR = '/home/pi/output'  # Directory where the WAV files are generated on the source Pi
-REMOTE_INPUT_DIR = '/home/pi/input'   # Directory on the destination Pi where files should be copied
+LOCAL_OUTPUT_DIR = '/home/lab03/Desktop/intertotem/it-u-intertotem/output'  # Directory where the WAV files are generated on the source Pi
+REMOTE_INPUT_DIR = '/home/totem/Desktop/intertotem/it-u-intertotem/input'   # Directory on the destination Pi where files should be copied
 
 # Destination Pi's SSH details
-destination_ip = '192.168.1.101'  # IP address of the destination Raspberry Pi
-username = 'pi'                   # SSH username (typically 'pi')
-password = 'yourpassword'         # SSH password (or set up SSH keys for passwordless login)
+destination_ip = '192.168.1.129'  # IP address of the destination Raspberry Pi
+username = 'totem'                   # SSH username (typically 'pi')
+password = 'totem'         # SSH password (or set up SSH keys for passwordless login)
 
 # Initialize OSC client
 client = SimpleUDPClient(osc_ip, osc_port)
