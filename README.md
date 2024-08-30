@@ -9,6 +9,18 @@ source it-u/bin/activate
 python main.py
 ```
 
+**Project Structure**:
+
+```
+your_project_directory/
+│
+├── main.py # main earthquake logic, calls communication script at the end
+├── communication/
+│   ├── __init__.py  # (empty file to make this directory a package)
+│   └── communication.py  # communication script
+└── output/  # directory where WAV files are stored
+```
+
 ## 🌍 From the [Project Proposal](https://github.com/heseltime/it-u-intertotem/blob/main/project-proposal.pdf)
 
 This project aims to engage how we experience seismic data by creating an experience (artistic) and non-standard seismograph that merges cultural artefact and elements of nature.
