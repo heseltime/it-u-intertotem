@@ -14,7 +14,7 @@ REMOTE_INPUT_DIR = '/home/totem/Desktop/intertotem/it-u-intertotem/input'  # Dir
 username = 'totem'  # SSH username
 password = 'totem'  # SSH password
 
-def copy_file_to_pi(local_path, remote_path, destination_ip):
+def copy_file_to_pi(local_path, remote_path, destination_ip=destination_ips):
     """
     Copies a WAV file from the local directory to a remote Raspberry Pi and sends an OSC message upon completion.
 
