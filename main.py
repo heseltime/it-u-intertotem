@@ -22,7 +22,12 @@ destination_ips = ["192.168.1.129"]
 #
 # ART: Locations to hear the loudest earthquakes from, picked by speakers/installation artists
 #
-NSLC = [('FMP', 'CI', '00', 'BHZ'), ('PSI', 'PS', '00', 'BHZ'), ('KBA', 'OE', '00', 'BHZ'), ('IU', 'KIEV', '00', 'BHZ')] # David, Eko, Jack, Letta
+NSLC = [('CI', 'FMP', '', 'HHZ'),
+        ('PS', 'PSI', '', 'BHZ'),
+        ('OE', 'KBA', '', 'HHZ'),
+        ('IU', 'KIEV', '00', 'BHZ')] 
+
+# David, Eko, Jack, Letta
 
 #
 # ###########################################################################
