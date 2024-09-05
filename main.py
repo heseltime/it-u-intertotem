@@ -111,8 +111,6 @@ def main_loop():
         # Init client
         client = Client("IRIS")
         catalog = fetch_earthquake_data(starttime, endtime, MIN_MAGNITUDE_OF_INTEREST)
-
-        print(f"Retrieved {len(catalog)} earthquakes within the last 2 hours.")
         
         # Check if catalog is valid and not empty
         if not catalog or len(catalog) == 0:
