@@ -36,7 +36,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # PARAMETERS OF INTEREST
 CATALOG_REQUEST_FREQUENCY_IN_SECONDS = 30  # 1/2 minute
-MIN_MAGNITUDE_OF_INTEREST = 4.5
+MIN_MAGNITUDE_OF_INTEREST = 1.0
 MAX_NUMBER_OF_EARTHQUAKES_RETRIEVED_PER_REQUEST = 10 
 
 # AUX. FUNCTIONS
@@ -111,6 +111,8 @@ def main_loop():
         # Init client
         client = Client("IRIS")
         catalog = fetch_earthquake_data(starttime, endtime, MIN_MAGNITUDE_OF_INTEREST)
+
+        print(f"Retrieved {len(catalog)} earthquakes within the last 2 hours.")
         
         # Check if catalog is valid and not empty
         if not catalog or len(catalog) == 0:
