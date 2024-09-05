@@ -51,3 +51,69 @@ Totems are central to the project, representing the fusion of technology, art, a
 Each totem is intended to resonate with its environment, whether through its design, sound, or placement. The visual and auditory aspects of the totems are meant to create a holistic sensory experience that connects the viewer to the data in a meaningful way.
 
 The totems not only serve as functional hardware components but also as artistic expressions, allowing the project to transcend traditional scientific boundaries and engage audiences on a more personal and emotional level.
+
+## :computer: Algorithm Summary (for Installation September 6th, 2024)
+
+### Import Libraries and Modules
+- Imports various Python libraries and modules required for:
+  - File handling
+  - Time management
+  - Seismological data retrieval
+  - WAV file processing
+  - Progress tracking
+- Imports a custom module `communication` for copying files to Raspberry Pi devices.
+
+### Define Parameters
+- **Destination IPs**:  
+  List of IP addresses for the Raspberry Pi devices where the WAV files will be copied.
+  
+- **NSLC Parameters**:  
+  List of tuples specifying the Network, Station, Location, and Channel (NSLC) parameters to be used for retrieving seismogram data.
+
+- **Directories**:  
+  - `TARGET_DEVICE_INPUT_DIRECTORY`: Directory path on the destination Pi devices.  
+  - `OUTPUT_DIR`: Local directory to store the output WAV files.
+
+- **Configuration Parameters**:  
+  - `CATALOG_REQUEST_FREQUENCY_IN_SECONDS`: Frequency for making earthquake catalog requests (in seconds).  
+  - `MIN_MAGNITUDE_OF_INTEREST`: Minimum magnitude of earthquakes to be considered.  
+  - `MAX_NUMBER_OF_EARTHQUAKES_RETRIEVED_PER_REQUEST`: Maximum number of earthquakes to retrieve per request.
+
+### Define Auxiliary Functions
+1. **`fetch_earthquake_data`**:  
+   Fetches earthquake data within a specific time range and magnitude threshold using the ObsPy library.
+
+2. **`fetch_seismogram_data`**:  
+   Retrieves seismogram data for a given earthquake event and NSLC parameters.
+
+3. **`calculate_distance_to_epicenter`**:  
+   Calculates the distance between the earthquake's epicenter and the selected station using geographic coordinates.
+
+4. **`seismogram_to_wav`**:  
+   Converts the seismogram data into a WAV file format with specified speed-up and filtering options.
+
+5. **`sanitize_filename`**:  
+   Removes invalid characters from filenames to ensure compatibility across different file systems.
+
+### Main Loop
+- **Continuous Loop**:
+  1. **Fetch Earthquake Data**:  
+     Requests earthquake data for the last two hours.
+  
+  2. **Filter and Sort Earthquake Data**:  
+     Checks if any earthquakes were found and sorts them by magnitude in descending order. Limits the number of processed earthquakes.
+  
+  3. **Process Earthquake Events**:  
+     - Iterates over the limited set of earthquakes.
+     - Randomly selects an NSLC parameter set to determine the perspective from which the event will be heard.
+     - Retrieves the corresponding seismogram data.
+     - Computes the distance to the epicenter.
+     - Converts the seismogram data into a WAV file.
+     - Copies the WAV file to the target Raspberry Pi devices.
+  
+  4. **Repeat**:  
+     Waits for a specified interval before fetching new earthquake data.
+
+### Execution
+- The `main_loop()` function is called to start the continuous data retrieval and processing loop when the script is executed.
+
