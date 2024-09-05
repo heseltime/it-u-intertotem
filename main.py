@@ -14,7 +14,7 @@ from communication.communication import copy_file_to_pi
 # List of destination IPs for multiple Raspberry Pis
 destination_ips = ["192.168.1.129"]
 
-TARGET_DEVICE_INPUT_DIRECTORY = '/home/totem/Desktop/intertotem/it-u-intertotem/input'  # Directory on the destination Pi where files should be copied
+TARGET_DEVICE_INPUT_DIRECTORY = '/home/totem/Desktop/intertotem/it-u-intertotem-totembase/input'  # Directory on the destination Pi where files should be copied
 
 # DIRECTORY to store output WAV files
 OUTPUT_DIR = 'output'
@@ -29,6 +29,9 @@ MAX_NUMBER_OF_EARTHQUAKES_RETRIEVED_PER_REQUEST = 10
 NETWORKS = ['IU', 'US', 'CI', 'GE', 'AK']  # Add or modify according to data of interest
 STATIONS = ['ANMO', 'BHZ', 'BRK', 'COLA', 'DUG']  # Add or modify according to data of interest
 
+# TODO: NSLC (Network, Station, Location, Channel) parameters: [(a, b, c, d as strings), (), ...]
+NLSC = [('IU', 'KIEV', '00', 'BHZ')]	
+
 CATALOG_REQUEST_WINDOW_ENDTIME = UTCDateTime()  # Current time
 CATALOG_REQUEST_WINDOW_STARTTIME = CATALOG_REQUEST_WINDOW_ENDTIME - 24 * 3600  # 24 hours before
 
@@ -42,7 +45,7 @@ def fetch_earthquake_data(starttime, endtime, min_magnitude):
         print(f"Error fetching earthquake data: {e}")
         return None
 
-def fetch_seismogram_data(event, client, network, station, duration=600):
+def fetch_seismogram_data(event, client, network, station, duration=3600): # TODO: add location and channel as parameters, read from NLSC
     origin_time = event.origins[0].time
     try:
         inventory = client.get_stations(network=network, station=station, starttime=origin_time, endtime=origin_time + duration, level="response")
@@ -70,16 +73,25 @@ def calculate_distance_to_epicenter(event, inventory):
     distance_km = geodetics.degrees2kilometers(distance_km)  # Convert degrees to kilometers
     return distance_km
 
-def seismogram_to_wav(stream, output_path, rate=100):
+def seismogram_to_wav(stream, output_path, speed_up=400):
     # Trim, filter, and normalize the data
     stream.detrend('linear')
     stream.taper(max_percentage=0.05)
     # Adjust high corner frequency below Nyquist limit
-    stream.filter("bandpass", freqmin=0.1, freqmax=19.9, corners=4, zerophase=True)
+    #stream.filter("bandpass", freqmin=0.1, freqmax=19.9, corners=4, zerophase=True)
+
+    sps = stream[0].stats.sampling_rate
+    output_framerate = sps * speed_up
     
     # Extract data and convert to WAV format
-    data = np.array(stream[0].data * 32767, dtype=np.int16)  # Scale to 16-bit integer
-    write_wav(output_path, rate, data)
+    #data = np.array(stream[0].data * 32767, dtype=np.int16)  # Scale to 16-bit integer
+    #write_wav(output_path, rate, data)
+
+    # Use obspy method
+    stream.write(output_path, 
+         format = 'WAV',
+         framerate = output_framerate,
+         rescale = True)
 
 # Remove invalid characters
 def sanitize_filename(name):
