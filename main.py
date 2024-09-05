@@ -30,7 +30,7 @@ NETWORKS = ['IU', 'US', 'CI', 'GE', 'AK']  # Add or modify according to data of 
 STATIONS = ['ANMO', 'BHZ', 'BRK', 'COLA', 'DUG']  # Add or modify according to data of interest
 
 # TODO: NSLC (Network, Station, Location, Channel) parameters: [(a, b, c, d as strings), (), ...]
-NLSC = [('IU', 'KIEV', '00', 'BHZ')]	
+NSLC = [('IU', 'KIEV', '00', 'BHZ')]	
 
 CATALOG_REQUEST_WINDOW_ENDTIME = UTCDateTime()  # Current time
 CATALOG_REQUEST_WINDOW_STARTTIME = CATALOG_REQUEST_WINDOW_ENDTIME - 24 * 3600  # 24 hours before
@@ -45,7 +45,7 @@ def fetch_earthquake_data(starttime, endtime, min_magnitude):
         print(f"Error fetching earthquake data: {e}")
         return None
 
-def fetch_seismogram_data(event, client, network, station, duration=3600): # TODO: add location and channel as parameters, read from NLSC
+def fetch_seismogram_data(event, client, network, station, location, channel, duration=3600):
     origin_time = event.origins[0].time
     try:
         inventory = client.get_stations(network=network, station=station, starttime=origin_time, endtime=origin_time + duration, level="response")
@@ -125,14 +125,20 @@ def main_loop():
                 magnitude = event.magnitudes[0].mag
                 print(f"Processing earthquake with magnitude: {magnitude}")
                 
-                # Randomly select a network and station
-                network = random.choice(NETWORKS)
-                station = random.choice(STATIONS)
-                print(f"Selected network: {network}, station: {station}")
+                # Randomly select a an NSLC tuple from the user defined list
+                event_choice = random.choice(NSLC)
+
+                # Pick out the different parts
+                network = event_choice[0]
+                station = event_choice[1]
+                location = event_choice[2]
+                channel = event_choice[3]
+
+                print(f"Selected NSLC: {network}, {station}, {location}, {channel}")
                 
                 # Fetch seismogram data
                 try:
-                    stream, inventory = fetch_seismogram_data(event, client, network, station)
+                    stream, inventory = fetch_seismogram_data(event, client, network, station, location, channel)
                     if stream:
                         # Calculate the distance to the epicenter
                         distance_km = calculate_distance_to_epicenter(event, inventory)
