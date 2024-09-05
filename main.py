@@ -39,9 +39,6 @@ CATALOG_REQUEST_FREQUENCY_IN_SECONDS = 30  # 1/2 minute
 MIN_MAGNITUDE_OF_INTEREST = 4.5
 MAX_NUMBER_OF_EARTHQUAKES_RETRIEVED_PER_REQUEST = 10 
 
-CATALOG_REQUEST_WINDOW_ENDTIME = UTCDateTime()  # Current time
-CATALOG_REQUEST_WINDOW_STARTTIME = CATALOG_REQUEST_WINDOW_ENDTIME - 24 * 3600  # 24 hours before
-
 # AUX. FUNCTIONS
 def fetch_earthquake_data(starttime, endtime, min_magnitude):
     client = Client("IRIS")
@@ -56,7 +53,7 @@ def fetch_seismogram_data(event, client, network, station, location, channel, du
     origin_time = event.origins[0].time
     try:
         inventory = client.get_stations(network=network, station=station, starttime=origin_time, endtime=origin_time + duration, level="response")
-        st = client.get_waveforms(network=network, station=station, location="00", channel="BHZ", starttime=origin_time, endtime=origin_time + duration)
+        st = client.get_waveforms(network=network, station=station, location=location, channel=channel, starttime=origin_time, endtime=origin_time + duration)
         if len(st) == 0:
             raise ValueError("No seismogram data fetched.")
         return st, inventory
@@ -83,7 +80,8 @@ def calculate_distance_to_epicenter(event, inventory):
 def seismogram_to_wav(stream, output_path, speed_up=400):
     # Trim, filter, and normalize the data
     stream.detrend('linear')
-    stream.taper(max_percentage=0.05)
+
+    stream.taper(max_percentage=0.001) # try and smooth out, but no gap, between sound-switches
     # Adjust high corner frequency below Nyquist limit
     #stream.filter("bandpass", freqmin=0.1, freqmax=19.9, corners=4, zerophase=True)
 
@@ -107,8 +105,8 @@ def sanitize_filename(name):
 def main_loop():
     while True:
         # Update time window for each request to get the latest data
-        endtime = CATALOG_REQUEST_WINDOW_ENDTIME
-        starttime = CATALOG_REQUEST_WINDOW_STARTTIME
+        endtime = UTCDateTime() # Current time
+        starttime = endtime - 2 * 3600 # 2 hours before
         
         # Init client
         client = Client("IRIS")
