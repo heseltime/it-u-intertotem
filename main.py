@@ -11,8 +11,22 @@ from tqdm import tqdm  # For progress bar support
 # Import communication module
 from communication.communication import copy_file_to_pi
 
-# List of destination IPs for multiple Raspberry Pis
+#
+# INTERTOTEM INSTALLATION SETUP #############################################
+#
+
+# TECH: List of destination IPs of pis used for the installation, need to be on same network
 destination_ips = ["192.168.1.129"]
+
+# NSLC (Network, Station, Location, Channel) parameters: [(a, b, c, d as strings), (), ...]
+#
+# ART: Locations to hear the loudest earthquakes from, picked by speakers/installation artists
+#
+NSLC = [('FMP', 'CI', '00', 'BHZ'), ('PSI', 'PS', '00', 'BHZ'), ('KBA', 'OE', '00', 'BHZ'), ('IU', 'KIEV', '00', 'BHZ')] # David, Eko, Jack, Letta
+
+#
+# ###########################################################################
+#
 
 TARGET_DEVICE_INPUT_DIRECTORY = '/home/totem/Desktop/intertotem/it-u-intertotem-totembase/input'  # Directory on the destination Pi where files should be copied
 
@@ -24,13 +38,6 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 CATALOG_REQUEST_FREQUENCY_IN_SECONDS = 30  # 1/2 minute
 MIN_MAGNITUDE_OF_INTEREST = 4.5
 MAX_NUMBER_OF_EARTHQUAKES_RETRIEVED_PER_REQUEST = 10 
-
-# Lists of available networks and stations for random selection
-NETWORKS = ['IU', 'US', 'CI', 'GE', 'AK']  # Add or modify according to data of interest
-STATIONS = ['ANMO', 'BHZ', 'BRK', 'COLA', 'DUG']  # Add or modify according to data of interest
-
-# TODO: NSLC (Network, Station, Location, Channel) parameters: [(a, b, c, d as strings), (), ...]
-NSLC = [('IU', 'KIEV', '00', 'BHZ')]	
 
 CATALOG_REQUEST_WINDOW_ENDTIME = UTCDateTime()  # Current time
 CATALOG_REQUEST_WINDOW_STARTTIME = CATALOG_REQUEST_WINDOW_ENDTIME - 24 * 3600  # 24 hours before
@@ -121,11 +128,11 @@ def main_loop():
 
         # Initialize the progress bar with the correct total count
         with tqdm(total=len(limited_catalog), desc="Processing earthquakes") as pbar:
-            for event in limited_catalog:
+            for event in limited_catalog: # Pick the event with the highest magnitude from the catalog
                 magnitude = event.magnitudes[0].mag
                 print(f"Processing earthquake with magnitude: {magnitude}")
                 
-                # Randomly select a an NSLC tuple from the user defined list
+                # Randomly select a an NSLC tuple from the user defined list to hear the event from that perspective
                 event_choice = random.choice(NSLC)
 
                 # Pick out the different parts
