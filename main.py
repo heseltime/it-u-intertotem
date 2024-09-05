@@ -11,9 +11,6 @@ from tqdm import tqdm  # For progress bar support
 # Import communication module
 from communication.communication import copy_file_to_pi
 
-# List of destination IPs for multiple Raspberry Pi-Setup
-destination_ips = ["192.168.1.129"] 
-
 TARGET_DEVICE_INPUT_DIRECTORY = '/home/totem/Desktop/intertotem/it-u-intertotem/input'  # Directory on the destination Pi where files should be copied
 
 # DIRECTORY to store output WAV files
@@ -134,9 +131,8 @@ def main_loop():
                         seismogram_to_wav(stream, output_path)
                         print(f"WAV file created: {output_path}")
 
-                        # Call the function to copy the file to each remote Pi
-                        for ip in destination_ips:
-                            copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename), ip)
+                        # Call the function to copy the file to the remote Pi
+                        copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename))
                         
                     else:
                         print(f"No seismogram data available for earthquake with magnitude: {magnitude}.")
