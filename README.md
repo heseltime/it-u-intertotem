@@ -23,7 +23,7 @@ it-u-intertotem/
 └── output/  # directory where WAV files are stored
 ```
 
-## 🌍 From the [Project Proposal](https://github.com/heseltime/it-u-intertotem/blob/main/project-proposal.pdf)
+## 🌍 From the [Project Proposal](https://github.com/heseltime/it-u-intertotem/blob/main/project_proposal.pdf)
 
 This project aims to engage how we experience seismic data by creating an experience (artistic) and non-standard seismograph that merges cultural artefact and elements of nature.
 
@@ -40,9 +40,9 @@ But first, establishing the communicative mode is the end-goal of project stage 
 
 ## 📅 Project Stages
 
-- 1: Get components communicating
-- 2: Fleshing it out (Prototype)
-- 3: Wrap, Concept for Larger Scale Product
+- 1: Get components communicating - DONE ✔️
+- 2: Fleshing it out (Prototype) - DONE ✔️
+- 3: Wrap, Concept for Larger Scale Product - DONE, ready for installation September 6th, 2024 🏁
 
 ## 🪆 Totems
 
