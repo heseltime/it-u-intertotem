@@ -40,9 +40,9 @@ But first, establishing the communicative mode is the end-goal of project stage 
 
 ## 📅 Project Stages
 
-- 1: Get components communicating
-- 2: Fleshing it out (Prototype)
-- 3: Wrap, Concept for Larger Scale Product
+- 1: Get components communicating - DONE ✔️
+- 2: Fleshing it out (Prototype) - DONE ✔️
+- 3: Wrap, Concept for Larger Scale Product - DONE, ready for installation September 6th, 2024 🏁
 
 ## 🪆 Totems
 
