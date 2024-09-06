@@ -22,12 +22,10 @@ from communication.communication import copy_file_to_pi
 #
 # ART: Locations to hear the loudest earthquakes from, picked by speakers/installation artists
 #
-NSLC = [('CI', 'FMP', '', 'HHZ', '192.168.1.169'), # David
-        ('PS', 'PSI', '', 'BHZ', ''), # Eko
-        ('OE', 'KBA', '', 'HHZ', ''), # Jack
-        ('IU', 'KIEV', '00', 'BHZ', '192.168.1.129')] # Letta
-
-# Code TODO: Refactor Datatype/abstract this more
+NSLC = [(('CI', 'FMP', '', 'HHZ'), '192.168.1.169'), # David
+        (('PS', 'PSI', '', 'BHZ'), ''), # Eko
+        (('OE', 'KBA', '', 'HHZ'), ''), # Jack
+        (('IU', 'KIEV', '00', 'BHZ'), '192.168.1.129')] # Letta
 
 #
 # ###########################################################################
@@ -139,13 +137,13 @@ def main_loop():
                 event_choice = random.choice(NSLC)
 
                 # Pick out the different parts
-                network = event_choice[0]
-                station = event_choice[1]
-                location = event_choice[2]
-                channel = event_choice[3]
+                network = event_choice[0][0]
+                station = event_choice[0][1]
+                location = event_choice[0][2]
+                channel = event_choice[0][3]
 
                 # MODE 2: Associate target with rest of NSLC
-                target_ip = event_choice[4]
+                target_ip = event_choice[1]
 
                 print(f"Selected NSLC: {network}, {station}, {location}, {channel}")
                 
@@ -170,9 +168,10 @@ def main_loop():
                         #    copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename), ip)
 
                         copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename), target_ip)
-                        # MODE 2: Call the function to copy the file to a specific Pi, see above data structure (Main TODO)
-
-                        
+                        # MODE 2: Call the function to copy the file to a specific Pi, see above data structure
+                        #   In this mode: no problem if target_ip Pi is not available, 
+                        #           error at timeout, try again (with random selection of NSLC) 
+                        #           next round            
 
                     else:
                         print(f"No seismogram data available for earthquake with magnitude: {magnitude}.")
