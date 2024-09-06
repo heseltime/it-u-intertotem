@@ -16,18 +16,18 @@ from communication.communication import copy_file_to_pi
 #
 
 # TECH: List of destination IPs of pis used for the installation, need to be on same network
-destination_ips = ["192.168.1.129"]
+#destination_ips = ["192.168.1.129"]
 
 # NSLC (Network, Station, Location, Channel) parameters: [(a, b, c, d as strings), (), ...]
 #
 # ART: Locations to hear the loudest earthquakes from, picked by speakers/installation artists
 #
-NSLC = [('CI', 'FMP', '', 'HHZ'),
-        ('PS', 'PSI', '', 'BHZ'),
-        ('OE', 'KBA', '', 'HHZ'),
-        ('IU', 'KIEV', '00', 'BHZ')] 
+NSLC = [('CI', 'FMP', '', 'HHZ', '192.168.1.169'), # David
+        ('PS', 'PSI', '', 'BHZ', ''), # Eko
+        ('OE', 'KBA', '', 'HHZ', ''), # Jack
+        ('IU', 'KIEV', '00', 'BHZ', '192.168.1.129')] # Letta
 
-# David, Eko, Jack, Letta
+# Code TODO: Refactor Datatype/abstract this more
 
 #
 # ###########################################################################
@@ -144,6 +144,9 @@ def main_loop():
                 location = event_choice[2]
                 channel = event_choice[3]
 
+                # MODE 2: Associate target with rest of NSLC
+                target_ip = event_choice[4]
+
                 print(f"Selected NSLC: {network}, {station}, {location}, {channel}")
                 
                 # Fetch seismogram data
@@ -162,10 +165,15 @@ def main_loop():
                         seismogram_to_wav(stream, output_path)
                         print(f"WAV file created: {output_path}")
 
-                        # Call the function to copy the file to tmultiple Pis
-                        for ip in destination_ips:
-                            copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename), ip)
+                        # MODE 1: Call the function to copy the file to tmultiple Pis
+                        #for ip in destination_ips:
+                        #    copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename), ip)
+
+                        copy_file_to_pi(output_path, os.path.join(TARGET_DEVICE_INPUT_DIRECTORY, sanitized_filename), target_ip)
+                        # MODE 2: Call the function to copy the file to a specific Pi, see above data structure (Main TODO)
+
                         
+
                     else:
                         print(f"No seismogram data available for earthquake with magnitude: {magnitude}.")
                 except Exception as e:
