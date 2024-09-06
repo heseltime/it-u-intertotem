@@ -23,9 +23,9 @@ from communication.communication import copy_file_to_pi
 # ART: Locations to hear the loudest earthquakes from, picked by speakers/installation artists
 #
 NSLC = [(('CI', 'FMP', '', 'HHZ'), '192.168.1.169'), # David
-        (('PS', 'PSI', '', 'BHZ'), ''), # Eko
-        (('OE', 'KBA', '', 'HHZ'), ''), # Jack
-        (('IU', 'KIEV', '00', 'BHZ'), '192.168.1.129')] # Letta
+        (('PS', 'PSI', '', 'BHZ'), '192.168.1.129'), # Eko
+        (('OE', 'KBA', '', 'HHZ'), '192.168.1.104'), # Jack
+        (('IU', 'KIEV', '00', 'BHZ'), '192.168.1.130')] # Letta
 
 #
 # ###########################################################################
